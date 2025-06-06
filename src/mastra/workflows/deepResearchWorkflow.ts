@@ -647,7 +647,7 @@ ${sr.citations.map(c => `- ${c.text} (出典: ${c.url})`).join('\n')}
         };
       } catch (error) {
         console.error('最終回答生成エラー:', error);
-        return {
+      return {
           answer: '申し訳ございません。回答の生成中にエラーが発生しました。',
           sources: Array.from(allSources.values()).slice(0, 10),
           searchQueries: allQueries,
