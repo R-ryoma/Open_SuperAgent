@@ -120,3 +120,4 @@ export { browserObserveTool } from './browserObserveTool';
 export { browserWaitTool } from './browserWaitTool';
 export { browserScreenshotTool } from './browserScreenshotTool';
 export { browserCloseTool } from './browserCloseTool';
+export { claudeCodeTool } from './claudeCodeTool';

@@ -10,7 +10,8 @@ import {
   imagen4GenerationTool,
   v0CodeGenerationTool,
   graphicRecordingTool,
-  minimaxTTSTool
+  minimaxTTSTool,
+  claudeCodeTool
 } from '../tools'; // Import all tools
 import { browserSessionTool } from '../tools/browserSessionTool';
 import { browserGotoTool } from '../tools/browserGotoTool';
@@ -38,6 +39,7 @@ You have access to the following specialized tools:
 - \`presentationPreviewTool\`: Displays a preview of HTML content
 - \`braveSearchTool\`: Searches the web for information
 - \`grokXSearchTool\`: Searches for information using Grok's X.ai API with live data
+- \`claude-code-tool\`: Create a new GitHub issue using ClaudeCodeTool. IMPORTANT: When creating an issue, you MUST include the string '@claude' (all lowercase) in the 'body' parameter.
 
 - \`geminiImageGenerationTool\`: Generates images based on text prompts
 - \`geminiVideoGenerationTool\`: Generates videos based on text prompts or images
@@ -54,6 +56,19 @@ You have access to the following specialized tools:
   - \`browserWaitTool\`: Waits for a specified duration
   - \`browserScreenshotTool\`: Takes screenshots of the current page
   - \`browserCloseTool\`: Closes the browser session
+
+## Claude Code Action: Task Decomposition Workflow
+When a user requests a code modification (e.g., "edit this code using Claude code", "add this feature"), you MUST follow this specific workflow instead of performing the edit directly:
+
+1.  **Analyze and Plan**: First, analyze the complexity of the requested task. Do not execute any changes yet. Based on your analysis, create a step-by-step plan to implement the changes.
+2.  **Decompose if Necessary**: 
+    -   If the request is large or complex (e.g., adding a new feature, refactoring multiple files, implementing a new UI component), you **MUST** break it down into smaller, logical sub-tasks. The more complex the request, the more sub-tasks you should create.
+    -   If the request is simple and small (e.g., fixing a typo, changing a color, renaming a variable), a single task is sufficient.
+3.  **Present the Plan**: Briefly explain your plan to the user. For example: "I understand the request. I will create GitHub issues for the following sub-tasks: 1. Create the new API endpoint. 2. Build the frontend form component. 3. Connect the form to the API."
+4.  **Execute Sequentially**: After presenting the plan, execute the \`claude-code-tool\` for **each sub-task** in your plan, one by one.
+    -   Each issue's title should clearly describe the sub-task.
+    -   The body of the issue must contain the necessary details and **always include the string '@claude' (all lowercase)** as per the tool's instructions.
+5.  **Report Completion**: Once all issues have been created successfully, report back to the user with the URLs of the created issues.
 
 ## Communication Guidelines
 1. Be conversational but professional.
@@ -154,6 +169,7 @@ Remember that you are a general-purpose assistant, not limited to coding tasks. 
     presentationPreviewTool, // Register the preview tool with the agent
     braveSearchTool, // Register the search tool
     grokXSearchTool, // Register the Grok X search tool
+    claudeCodeTool, // Register the GitHub issue tool
     geminiImageGenerationTool, // Register the image generation tool
     geminiVideoGenerationTool, // Register the video generation tool
     imagen4GenerationTool, // Register the Imagen 4 generation tool
