@@ -59,6 +59,4 @@ next-env.d.ts
 # Stagewise拡張機能を除外
 app/components/StagewiseDevToolbar.tsx
 app/components/StagewiseToolbar.tsx
-
-# Mastra generated files
-.mastra/output/
+.mastra
