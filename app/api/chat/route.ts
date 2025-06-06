@@ -12,13 +12,11 @@ export async function POST(req: Request) {
   try {
     const { messages } = await req.json();
 
-    // Get the slideCreatorAgent
-    // const agent = mastra.getAgent('Slide Creator Agent');
-    const agent = mastra.getAgent('slideCreatorAgent'); // Changed to use the registration key
-    if (!agent) {
-      // console.error('[API CHAT ROUTE] Agent "Slide Creator Agent" not found.');
-      console.error('[API CHAT ROUTE] Agent "slideCreatorAgent" not found.'); // Updated error message
-      return new Response(JSON.stringify({ error: 'Agent not found.' }), {
+    // Get the masterControlNetwork
+    const network = mastra.getNetwork('masterControlNetwork');
+    if (!network) {
+      console.error('[API CHAT ROUTE] Network "masterControlNetwork" not found.');
+      return new Response(JSON.stringify({ error: 'Network not found.' }), {
         status: 404,
         headers: {
           'Content-Type': 'application/json',
@@ -26,10 +24,10 @@ export async function POST(req: Request) {
       });
     }
 
-    // Get the stream from the agent
-    const stream = await agent.stream(messages);
+    // Get the stream from the network
+    const stream = await network.stream(messages);
 
-    // Return the agent's stream as a DataStreamResponse
+    // Return the network's stream as a DataStreamResponse
     return stream.toDataStreamResponse();
 
   } catch (error) {

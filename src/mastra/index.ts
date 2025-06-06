@@ -17,6 +17,7 @@ import {
   weatherTool
 } from './tools';
 import { deepResearchWorkflow } from './workflows';
+import { masterControlNetwork } from './networks';
 
 // @ts-ignore - Type definition issue with tools property
 export const mastra = new Mastra({
@@ -24,6 +25,9 @@ export const mastra = new Mastra({
     weatherAgent,
     slideCreatorAgent, 
     imageCreatorAgent,
+  },
+  networks: {
+    masterControlNetwork,
   },
   tools: { 
     htmlSlideTool, 
