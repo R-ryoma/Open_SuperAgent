@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import { Separator } from '@/components/ui/separator';
-import { Aperture, Settings, User, BotMessageSquare, ChevronRight, ChevronLeft, BrainCircuit, Wrench, Film, Folder } from 'lucide-react';
+import { Aperture, Settings, User, BotMessageSquare, ChevronRight, ChevronLeft, BrainCircuit, Wrench, Film, Folder, Sparkles } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -33,6 +33,7 @@ export function Sidebar({ className }: SidebarProps) {
             <SidebarItem icon={<BotMessageSquare size={20} />} href="/" text="Agent" isCollapsed={isCollapsed} isActive={pathname === '/'} />
             <SidebarItem icon={<BrainCircuit size={20} />} href="/multi-agent" text="Multi Agent" isCollapsed={isCollapsed} isActive={pathname === '/multi-agent'} />
             <SidebarItem icon={<Wrench size={20} />} href="/tools" text="Tools" isCollapsed={isCollapsed} isActive={pathname.startsWith('/tools')} />
+            <SidebarItem icon={<Sparkles size={20} />} href="/usecases" text="Usecases" isCollapsed={isCollapsed} isActive={pathname.startsWith('/usecases')} />
           </nav>
           <Separator />
           <div className="p-2">
