@@ -2120,6 +2120,13 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
           </div>
         )}
 
+        {/* ツールUIの表示 */}
+        {toolCallUiElements.length > 0 && (
+          <div className="w-full max-w-3xl mb-6">
+            {toolCallUiElements}
+          </div>
+        )}
+
         {/* アシスタントテキストコンテンツ */}
         {content.trim() && (
           <div className="flex justify-start mb-6">
@@ -2261,13 +2268,6 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
                 }
               </div>
             </div>
-          </div>
-        )}
-        
-        {/* ツールUIの表示 */}
-        {toolCallUiElements.length > 0 && (
-          <div className="w-full max-w-3xl mb-6">
-            {toolCallUiElements}
           </div>
         )}
         
