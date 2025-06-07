@@ -1,17 +1,17 @@
-          'use client';
+'use client';
 
 import { useChat } from '@ai-sdk/react';
 import { AppSidebar } from '@/components/app-sidebar';
 import { MainHeader } from '@/app/components/MainHeader';
 import { ChatInputArea } from '@/app/components/ChatInputArea';
-import { ChatMessage } from './components/ChatMessage';
-import { PresentationTool } from './components/PresentationTool';
-import { ImageTool } from './components/ImageTool';
-import { BrowserOperationSidebar } from './components/BrowserOperationSidebar';
+import { ChatMessage } from '@/app/components/ChatMessage';
+import { PresentationTool } from '@/app/components/PresentationTool';
+import { ImageTool } from '@/app/components/ImageTool';
+import { BrowserOperationSidebar } from '@/app/components/BrowserOperationSidebar';
 import { useEffect, useState, useRef, useCallback, useOptimistic, startTransition } from 'react';
 import { Message } from 'ai';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
-import { useDeepResearch } from './hooks/useDeepResearch';
+import { useDeepResearch } from '@/app/hooks/useDeepResearch';
 import { ArrowPathIcon, MagnifyingGlassIcon, LightBulbIcon } from '@heroicons/react/24/outline';
 
 // ツール実行メッセージ用の型
@@ -130,15 +130,12 @@ export default function AppPage() {
     messages, 
     input, 
     handleInputChange, 
-    handleSubmit: originalHandleSubmit, 
+    handleSubmit, 
     isLoading, 
     error, 
-    data,
-    setMessages: originalSetMessages,
-    append: originalAppend,
-    reload
+    setMessages,
   } = useChat({
-    api: '/api/slide-creator/chat', // Mastra slideCreatorAgent を使用するエンドポイント
+    api: '/api/multi-agent-chat',
     id: conversationId,
     onFinish: (message) => {
       console.log('[Page] チャット完了:', message);
@@ -307,7 +304,7 @@ export default function AppPage() {
       handleInputChange(syntheticEvent);
       
       // Deep Researchワークフローを実行
-      executeDeepResearch(cleanInput).catch(error => {
+      executeDeepResearch(cleanInput).catch((error: any) => {
         console.error('[Page] Deep Research error:', error);
         
         // エラーメッセージを表示
@@ -327,7 +324,7 @@ export default function AppPage() {
     }
     
     // 標準のhandleSubmitを実行
-    originalHandleSubmit(e);
+    handleSubmit(e);
   };
 
   // メッセージからツール情報を抽出して処理

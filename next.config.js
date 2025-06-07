@@ -15,6 +15,15 @@ const nextConfig = {
           loaders: ['raw-loader'],
           as: '*.js',
         },
+        // HTMLファイルを処理するためのルールを追加
+        '**/*.html': {
+          loaders: ['raw-loader'],
+          as: '*.js',
+        },
+        // Turbopack用のフォントローダー設定を修正
+        '**/*.ttf': {
+          loaders: ['file-loader'],
+        },
       },
     },
   },
@@ -41,8 +50,14 @@ const nextConfig = {
 
     // @libsql関連ファイルの処理
     config.module.rules.push({
-      test: /\.(md|LICENSE)$/,
+      test: /\.(md|LICENSE|html)$/,
       type: 'asset/source',
+    });
+
+    // フォントファイルを処理するためのルールを追加
+    config.module.rules.push({
+      test: /\.(woff|woff2|eot|ttf|otf)$/i,
+      type: 'asset/resource',
     });
 
     // Stagehandとの互換性のための設定（Playwrightは内部で使用されるため外部化不要）

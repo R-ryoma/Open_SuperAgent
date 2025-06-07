@@ -2110,7 +2110,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
       <>
         {/* Deep Researchタイムライン表示 */}
         {isDeepResearchMessage() && (deepResearchEvents.length > 0 || isDeepResearchLoading) && (
-          <div className="flex justify-start mb-6">
+          <div className="flex justify-end mb-6">
             <div className="w-full max-w-3xl">
               <ActivityTimeline 
                 processedEvents={deepResearchEvents}

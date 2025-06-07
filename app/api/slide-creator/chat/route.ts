@@ -51,6 +51,8 @@ export async function POST(req: NextRequest) {
         const result = await run.start({
           inputData: {
             message: query,
+            maxIterations: 2,
+            queriesPerIteration: 5,
           },
         });
         

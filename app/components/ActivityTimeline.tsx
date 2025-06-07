@@ -62,7 +62,7 @@ export function ActivityTimeline({
   }, [isLoading, processedEvents]);
 
   return (
-    <Card className="border border-gray-200 rounded-lg bg-white max-h-96 mb-4">
+    <Card className="border border-gray-200 rounded-lg bg-white max-h-96 mb-4 w-72">
       <CardHeader>
         <CardDescription className="flex items-center justify-between">
           <div

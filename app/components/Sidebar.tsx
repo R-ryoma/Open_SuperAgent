@@ -1,13 +1,20 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Aperture, Settings, User, BotMessageSquare, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Aperture, Settings, User, BotMessageSquare, ChevronRight, ChevronLeft, BrainCircuit, Wrench, Film, Folder } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { SidebarItem } from '@/components/ui/sidebar';
 
 export const Sidebar = () => {
   const [isExpanded, setIsExpanded] = useState(true);
+  const pathname = usePathname();
 
   const menuItems = [
-    { name: 'OpenSuperAgent', href: '#', icon: BotMessageSquare, current: true },
+    { href: '/', label: 'エージェント', icon: BotMessageSquare },
+    { href: '/multi-agent', label: 'マルチエージェント', icon: BrainCircuit },
+    { href: '/tools', label: 'ツール一覧', icon: Wrench },
+    { href: '/media', label: 'メディア一覧', icon: Film },
+    { href: '/documents', label: 'ドキュメント', icon: Folder },
   ];
 
   const bottomMenuItems = [
@@ -53,21 +60,33 @@ export const Sidebar = () => {
       <nav className="flex-grow px-2 py-3 space-y-1 overflow-y-auto">
         {menuItems.map((item) => (
           <a
-            key={item.name}
+            key={item.label}
             href={item.href}
             className={`flex items-center px-2 py-1.5 text-sm rounded-md transition-colors
-              ${item.current 
+              ${pathname === item.href 
                 ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 font-medium' 
                 : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300'
               }
             `}
           >
-            <item.icon className={`h-4 w-4 ${item.current ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'}`} />
+            <item.icon className={`h-4 w-4 ${pathname === item.href ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'}`} />
             {isExpanded && (
-              <span className="ml-2">{item.name}</span>
+              <span className="ml-2">{item.label}</span>
             )}
           </a>
         ))}
+        <SidebarItem href="/">
+          <BotMessageSquare className="size-4" />
+          エージェント
+        </SidebarItem>
+        <SidebarItem href="/multi-agent">
+          <BrainCircuit className="size-4" />
+          マルチエージェント
+        </SidebarItem>
+        <SidebarItem href="/memory-synapse">
+          <BrainCircuit className="size-4" />
+          Memory Synapse
+        </SidebarItem>
       </nav>
 
       {/* Bottom Section */}
