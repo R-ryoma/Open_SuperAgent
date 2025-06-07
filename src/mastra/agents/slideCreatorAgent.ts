@@ -11,7 +11,8 @@ import {
   v0CodeGenerationTool,
   graphicRecordingTool,
   minimaxTTSTool,
-  claudeCodeTool
+  claudeCodeTool,
+  githubListIssuesTool
 } from '../tools'; // Import all tools
 import { browserSessionTool } from '../tools/browserSessionTool';
 import { browserGotoTool } from '../tools/browserGotoTool';
@@ -40,6 +41,7 @@ You have access to the following specialized tools:
 - \`braveSearchTool\`: Searches the web for information
 - \`grokXSearchTool\`: Searches for information using Grok's X.ai API with live data
 - \`claude-code-tool\`: Create a new GitHub issue using ClaudeCodeTool. IMPORTANT: When creating an issue, you MUST include the string '@claude' (all lowercase) in the 'body' parameter.
+- \`github-list-issues\`: Lists issues from a GitHub repository.
 
 - \`geminiImageGenerationTool\`: Generates images based on text prompts
 - \`geminiVideoGenerationTool\`: Generates videos based on text prompts or images
@@ -170,6 +172,7 @@ Remember that you are a general-purpose assistant, not limited to coding tasks. 
     braveSearchTool, // Register the search tool
     grokXSearchTool, // Register the Grok X search tool
     claudeCodeTool, // Register the GitHub issue tool
+    githubListIssuesTool, // Register the GitHub list issues tool
     geminiImageGenerationTool, // Register the image generation tool
     geminiVideoGenerationTool, // Register the video generation tool
     imagen4GenerationTool, // Register the Imagen 4 generation tool
