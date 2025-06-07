@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -24,8 +24,27 @@ import {
   Brain,
   Layers,
   Grid3X3,
-  X
+  X,
+  Github,
+  MousePointer,
+  Hand,
+  Eye,
+  Chrome,
+  Terminal,
+  FileCode,
+  Music,
+  Maximize,
+  LogOut,
+  Shrink
 } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 // ツールアイコンのマッピング
 const toolIconMap: Record<string, any> = {
@@ -39,6 +58,17 @@ const toolIconMap: Record<string, any> = {
   imagen4GenerationTool: Sparkles,
   v0CodeGenerationTool: Code,
   graphicRecordingTool: Layers,
+  githubListIssuesTool: Github,
+  claudeCodeTool: FileCode,
+  minimaxTTSTool: Music,
+  browserSessionTool: Chrome,
+  browserGotoTool: ExternalLink,
+  browserObserveTool: Eye,
+  browserActTool: Hand,
+  browserExtractTool: Shrink,
+  browserScreenshotTool: Maximize,
+  browserWaitTool: Terminal,
+  browserCloseTool: LogOut,
 };
 
 // ツールカテゴリのマッピング
@@ -53,6 +83,17 @@ const toolCategoryMap: Record<string, string> = {
   imagen4GenerationTool: '画像生成',
   v0CodeGenerationTool: 'コード生成',
   graphicRecordingTool: 'デザイン・視覚化',
+  githubListIssuesTool: 'GitHub連携',
+  claudeCodeTool: 'コード生成',
+  minimaxTTSTool: '音声生成',
+  browserSessionTool: 'ブラウザ操作',
+  browserGotoTool: 'ブラウザ操作',
+  browserObserveTool: 'ブラウザ操作',
+  browserActTool: 'ブラウザ操作',
+  browserExtractTool: 'ブラウザ操作',
+  browserScreenshotTool: 'ブラウザ操作',
+  browserWaitTool: 'ブラウザ操作',
+  browserCloseTool: 'ブラウザ操作',
 };
 
 // ツール説明のマッピング
@@ -67,6 +108,17 @@ const toolDescriptionMap: Record<string, string> = {
   imagen4GenerationTool: 'Google最新のImagen 4モデルを使用して、より詳細で高品質な画像を生成します。',
   v0CodeGenerationTool: 'Vercelのv0 AIモデルを使用してWebアプリケーションのコードを生成します。React、Next.js対応。',
   graphicRecordingTool: 'タイムラインベースのグラフィックレコーディング（グラレコ）を視覚的要素と共に作成します。',
+  githubListIssuesTool: '指定されたGitHubリポジトリのIssueを一覧表示します。',
+  claudeCodeTool: 'Claudeモデルを使用して、プロンプトに基づいたコードを生成します。',
+  minimaxTTSTool: 'Minimax TTS APIを使用して、テキストから高品質な音声を生成します。',
+  browserSessionTool: '新しいブラウザセッションを開始し、操作を準備します。',
+  browserGotoTool: '指定されたURLにブラウザでアクセスします。',
+  browserObserveTool: '現在のブラウザのビューポートを観察し、コンテンツを返します。',
+  browserActTool: 'ブラウザ上でクリックや入力などのアクションを実行します。',
+  browserExtractTool: 'ブラウザのページから特定の情報を抽出します。',
+  browserScreenshotTool: '現在のブラウザのスクリーンショットを撮影します。',
+  browserWaitTool: '特定の条件が満たされるまでブラウザの操作を待機します。',
+  browserCloseTool: '現在アクティブなブラウザセッションを終了します。',
 };
 
 // ツール機能のマッピング
@@ -81,20 +133,41 @@ const toolFeaturesMap: Record<string, string[]> = {
   imagen4GenerationTool: ['最新Imagen 4', '超高品質', '詳細な画像', '最先端AI'],
   v0CodeGenerationTool: ['React/Next.js', 'AI強化コード', 'Web最適化', 'モダンUI'],
   graphicRecordingTool: ['タイムライン作成', '視覚的要素', 'グラレコ生成', 'プロフェッショナル'],
+  githubListIssuesTool: ['リポジトリ指定', 'Issue一覧', '状態フィルタ'],
+  claudeCodeTool: ['高度なコード生成', '多言語対応', 'コンテキスト理解'],
+  minimaxTTSTool: ['高品質音声', '多言語対応', '音声合成'],
+  browserSessionTool: ['セッション管理', 'ヘッドレスブラウザ', '分離環境'],
+  browserGotoTool: ['URL指定', 'ページ遷移', 'ナビゲーション'],
+  browserObserveTool: ['コンテンツ取得', 'DOMスナップショット', '視覚情報'],
+  browserActTool: ['クリック操作', 'フォーム入力', 'UI操作自動化'],
+  browserExtractTool: ['データ抽出', 'セレクタ指定', '情報取得'],
+  browserScreenshotTool: ['フルページ', '要素指定', '画像保存'],
+  browserWaitTool: ['要素待機', '時間待機', '条件指定'],
+  browserCloseTool: ['セッション終了', 'リソース解放', 'クリーンアップ'],
 };
 
-// slideCreatorAgentで定義されているツール名のリスト（動的に取得する代わりに静的に定義）
+// 利用可能なすべてのツール名のリスト
 const agentToolNames = [
   'htmlSlideTool',
   'presentationPreviewTool',
   'braveSearchTool',
   'grokXSearchTool',
-  'advancedCalculatorTool',
   'geminiImageGenerationTool',
   'geminiVideoGenerationTool',
   'imagen4GenerationTool',
   'v0CodeGenerationTool',
-  'graphicRecordingTool'
+  'graphicRecordingTool',
+  'githubListIssuesTool',
+  'claudeCodeTool',
+  'minimaxTTSTool',
+  'browserSessionTool',
+  'browserGotoTool',
+  'browserObserveTool',
+  'browserActTool',
+  'browserExtractTool',
+  'browserScreenshotTool',
+  'browserWaitTool',
+  'browserCloseTool',
 ];
 
 // slideCreatorAgentからツール情報を動的に取得
@@ -130,6 +203,17 @@ function getToolDisplayName(toolName: string): string {
     imagen4GenerationTool: 'Imagen 4 画像生成',
     v0CodeGenerationTool: 'v0 コード生成',
     graphicRecordingTool: 'グラフィック レコーディング',
+    githubListIssuesTool: 'GitHub Issue一覧',
+    claudeCodeTool: 'Claude コード生成',
+    minimaxTTSTool: 'Minimax 音声合成',
+    browserSessionTool: 'ブラウザセッション開始',
+    browserGotoTool: 'ブラウザ URL移動',
+    browserObserveTool: 'ブラウザ 画面観察',
+    browserActTool: 'ブラウザ 操作実行',
+    browserExtractTool: 'ブラウザ 情報抽出',
+    browserScreenshotTool: 'ブラウザ スクリーンショット',
+    browserWaitTool: 'ブラウザ 待機',
+    browserCloseTool: 'ブラウザセッション終了',
   };
   
   return displayNames[toolName] || toolName;
@@ -160,6 +244,65 @@ function searchTools(tools: any[], searchQuery: string) {
     
     return nameMatch || descriptionMatch || categoryMatch || featuresMatch;
   });
+}
+
+interface ToolCardProps {
+  tool: {
+    id: string;
+    name: string;
+    description: string;
+    icon: any;
+    category: string;
+    features: string[];
+  };
+}
+
+function ToolCard({ tool }: ToolCardProps) {
+  const ToolIcon = tool.icon;
+
+  return (
+    <Dialog>
+      <Card className="flex flex-col h-full transition-all duration-300 ease-in-out hover:shadow-md">
+        <CardHeader className="flex flex-row items-center gap-4 pb-4">
+          <div className="p-2 bg-muted rounded-lg border">
+            <ToolIcon className="h-5 w-5 text-foreground" />
+          </div>
+          <CardTitle className="text-base font-semibold leading-tight">{tool.name}</CardTitle>
+        </CardHeader>
+        <CardContent className="pt-0 pb-4 flex-grow">
+          <Badge variant="outline">{tool.category}</Badge>
+        </CardContent>
+        <CardFooter>
+          <DialogTrigger asChild>
+            <Button variant="secondary" size="sm" className="w-full">
+              詳細を確認
+            </Button>
+          </DialogTrigger>
+        </CardFooter>
+      </Card>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-3">
+            <div className="p-2 bg-muted rounded-lg border">
+              <ToolIcon className="h-5 w-5 text-foreground" />
+            </div>
+            {tool.name}
+          </DialogTitle>
+          <DialogDescription>
+            {tool.description}
+          </DialogDescription>
+        </DialogHeader>
+        <div className="py-4">
+            <h4 className="text-sm font-semibold uppercase text-muted-foreground mb-3">主な機能</h4>
+            <div className="flex flex-wrap gap-2">
+              {tool.features.map(feature => (
+                <Badge key={feature} variant="secondary">{feature}</Badge>
+              ))}
+            </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
 }
 
 export default function ToolsPage() {
@@ -210,38 +353,6 @@ export default function ToolsPage() {
       <SidebarInset>
         <div className="min-h-screen bg-background">
           <div className="container mx-auto px-4 py-8 max-w-7xl">
-            {/* ヘッダーセクション */}
-            <div className="text-center mb-12 space-y-4">
-              <div className="flex items-center justify-center mb-6">
-                <div className="p-4 bg-muted rounded-full border">
-                  <Bot className="h-8 w-8 text-foreground" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <h1 className="text-4xl font-bold tracking-tight text-foreground">
-                  AIツール一覧
-                </h1>
-                <p className="text-xl text-muted-foreground">
-                  Open-SuperAgent
-                </p>
-                </div>
-              <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                slideCreatorAgentで利用可能な高性能AIツールの完全なコレクション。
-                プレゼンテーション作成から画像・動画生成まで、あらゆるクリエイティブなタスクをサポートします。
-              </p>
-              <div className="flex items-center justify-center gap-2 pt-2">
-                <Badge variant="secondary">
-                  {toolsData.length} ツール利用可能
-                </Badge>
-                <Badge variant="outline">
-                  AI強化エージェント
-                </Badge>
-                <Badge variant="outline">
-                  動的更新対応
-                </Badge>
-              </div>
-            </div>
-
             {/* 検索セクション */}
             <Card className="mb-8">
               <CardHeader>
@@ -252,194 +363,64 @@ export default function ToolsPage() {
               </CardHeader>
               <CardContent>
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder="ツール名、説明、機能で検索..."
+                  <Input 
+                    type="search" 
+                    placeholder="ツール名、機能、カテゴリなどで検索..." 
+                    className="w-full pr-10"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 pr-10"
                   />
                   {searchQuery && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8"
                       onClick={clearSearch}
-                      className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0"
                     >
                       <X className="h-4 w-4" />
                     </Button>
                   )}
                 </div>
-                {searchQuery && (
-                  <div className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
-                    <span>検索結果: {filteredTools.length} 件</span>
-                    {filteredTools.length !== toolsData.length && (
-                      <Badge variant="outline" className="text-xs">
-                        {toolsData.length - filteredTools.length} 件が非表示
-                      </Badge>
-                    )}
-              </div>
-                )}
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
 
-            {/* カテゴリフィルター */}
-            <Card className="mb-8">
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <Grid3X3 className="h-5 w-5" />
-                  カテゴリ別フィルター
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-wrap gap-2">
-                  {categories.map((category) => (
-                    <Button
+            {/* カテゴリフィルターとツール一覧 */}
+            <div className="grid grid-cols-12 gap-8">
+              {/* カテゴリサイドバー */}
+              <div className="col-span-12 md:col-span-3 lg:col-span-2">
+                <h3 className="text-base font-semibold mb-4">カテゴリ</h3>
+                <div className="space-y-1">
+                  {categories.map(category => (
+                    <Button 
                       key={category.name}
-                      variant={selectedCategory === category.name ? "default" : "outline"}
-                      size="sm"
+                      variant={selectedCategory === category.name ? 'secondary' : 'ghost'}
+                      className="w-full justify-start"
                       onClick={() => setSelectedCategory(category.name)}
-                      className="transition-all duration-200"
                     >
-                      {category.name}
-                      <Badge variant="secondary" className="ml-2 text-xs">
+                      <span className="flex-grow text-left">{category.name}</span>
+                      <Badge variant={selectedCategory === category.name ? 'default' : 'outline'} className="rounded-full">
                         {category.count}
                       </Badge>
                     </Button>
                   ))}
                 </div>
-              </CardContent>
-            </Card>
-
-            {/* 検索結果が0件の場合の表示 */}
-            {filteredTools.length === 0 && (
-              <Card className="mb-8">
-                <CardContent className="p-8 text-center">
-                  <div className="space-y-4">
-                    <div className="p-4 bg-muted rounded-full w-fit mx-auto">
-                      <Search className="h-8 w-8 text-muted-foreground" />
-                    </div>
-                    <div className="space-y-2">
-                      <h3 className="text-lg font-semibold text-foreground">
-                        検索結果が見つかりません
-                      </h3>
-                      <p className="text-muted-foreground">
-                        「{searchQuery}」に一致するツールが見つかりませんでした。
-                      </p>
-                    </div>
-                    <div className="flex justify-center gap-2">
-                      <Button variant="outline" onClick={clearSearch}>
-                        検索をクリア
-                      </Button>
-                      <Button variant="outline" onClick={() => setSelectedCategory('すべて')}>
-                        すべてのカテゴリを表示
-                      </Button>
-                </div>
               </div>
-            </CardContent>
-          </Card>
-            )}
 
-            {/* ツールグリッド */}
-            {filteredTools.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredTools.map((tool) => {
-                const IconComponent = tool.icon;
-                return (
-                    <Card 
-                      key={tool.id} 
-                      className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
-                    >
-                      <CardHeader className="pb-4">
-                      <div className="flex items-start justify-between">
-                          <div className="p-3 bg-muted rounded-lg border">
-                            <IconComponent className="h-6 w-6 text-foreground" />
-                          </div>
-                          <Badge variant="secondary" className="text-xs">
-                            {tool.category}
-                            </Badge>
-                        </div>
-                        <CardTitle className="text-lg group-hover:text-primary transition-colors duration-200">
-                          {tool.name}
-                        </CardTitle>
-                        <CardDescription className="text-sm leading-relaxed">
-                        {tool.description}
-                      </CardDescription>
-                      </CardHeader>
-                      
-                      <CardContent className="pt-0">
-                        <Separator className="mb-4" />
-                      <div className="space-y-3">
-                        <div>
-                            <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-1">
-                              <Settings className="h-4 w-4" />
-                              主な機能
-                            </h4>
-                          <div className="flex flex-wrap gap-1">
-                            {tool.features.map((feature, index) => (
-                              <Badge 
-                                key={index} 
-                                variant="outline" 
-                                  className="text-xs px-2 py-1"
-                              >
-                                {feature}
-                              </Badge>
-                            ))}
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <div className="mt-6 pt-4 border-t">
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            className="w-full group-hover:bg-muted transition-colors duration-200"
-                          >
-                            <FileText className="h-4 w-4 mr-2" />
-                            詳細を確認
-                            <ExternalLink className="h-3 w-3 ml-1 opacity-50" />
-                          </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-          </div>
-            )}
-      
-            {/* フッター統計 */}
-            <Card className="mt-12">
-              <CardContent className="p-8">
-                <div className="text-center space-y-6">
-                  <div className="space-y-2">
-                    <h3 className="text-xl font-semibold text-foreground">
-                      Open-SuperAgent の特徴
-                    </h3>
-                    <p className="text-muted-foreground">
-                      多様なAIツールを統合し、クリエイティブなワークフローを効率化
-                    </p>
+              {/* ツール一覧 */}
+              <div className="col-span-12 md:col-span-9 lg:col-span-10">
+                {filteredTools.length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    {filteredTools.map(tool => (
+                      <ToolCard key={tool.id} tool={tool} />
+                    ))}
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                    <div className="text-center space-y-1">
-                      <div className="text-2xl font-bold text-foreground">{toolsData.length}</div>
-                      <div className="text-sm text-muted-foreground">利用可能ツール</div>
-                    </div>
-                    <div className="text-center space-y-1">
-                      <div className="text-2xl font-bold text-foreground">{categories.length - 1}</div>
-                      <div className="text-sm text-muted-foreground">カテゴリ</div>
-                    </div>
-                    <div className="text-center space-y-1">
-                      <div className="text-2xl font-bold text-foreground">AI</div>
-                      <div className="text-sm text-muted-foreground">強化エージェント</div>
-                    </div>
-                    <div className="text-center space-y-1">
-                      <div className="text-2xl font-bold text-foreground">24/7</div>
-                      <div className="text-sm text-muted-foreground">利用可能</div>
-                    </div>
-          </div>
-          </div>
-              </CardContent>
-            </Card>
+                ) : (
+                  <div className="text-center py-16">
+                    <p className="text-muted-foreground">一致するツールが見つかりませんでした。</p>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </SidebarInset>
