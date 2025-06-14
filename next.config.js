@@ -2,28 +2,25 @@
  * @type {import('next').NextConfig}
  */
 const nextConfig = {
-  experimental: {
-    // instrumentationHook: true, // 非推奨のため削除
-    turbo: {
-      rules: {
-        // Turbopack用のルール設定
-        '*.md': {
-          loaders: ['raw-loader'],
-          as: '*.js',
-        },
-        '*.LICENSE': {
-          loaders: ['raw-loader'],
-          as: '*.js',
-        },
-        // HTMLファイルを処理するためのルールを追加
-        '**/*.html': {
-          loaders: ['raw-loader'],
-          as: '*.js',
-        },
-        // Turbopack用のフォントローダー設定を修正
-        '**/*.ttf': {
-          loaders: ['file-loader'],
-        },
+  turbopack: {
+    rules: {
+      // Turbopack用のルール設定
+      '*.md': {
+        loaders: ['raw-loader'],
+        as: '*.js',
+      },
+      '*.LICENSE': {
+        loaders: ['raw-loader'],
+        as: '*.js',
+      },
+      // HTMLファイルを処理するためのルールを追加
+      '**/*.html': {
+        loaders: ['raw-loader'],
+        as: '*.js',
+      },
+      // Turbopack用のフォントローダー設定を修正
+      '**/*.ttf': {
+        loaders: ['file-loader'],
       },
     },
   },

@@ -1,12 +1,9 @@
 "use client";
 
-import dynamic from "next/dynamic";
-
-const StagewiseToolbar = dynamic(
-  () => import("./StagewiseToolbar"),
-  { ssr: false }
-);
-
 export default function ClientStagewiseToolbar() {
-  return <StagewiseToolbar />;
+  return (
+    <div className="flex items-center gap-2 p-2 bg-gray-100 rounded-md">
+      <span className="text-sm text-gray-600">Stagewise Toolbar</span>
+    </div>
+  );
 } 
