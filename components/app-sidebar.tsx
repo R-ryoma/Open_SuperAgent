@@ -24,7 +24,6 @@ import {
 import { NavDocuments } from "@/components/nav-documents"
 import { NavMain } from "@/components/nav-main"
 import { NavSecondary } from "@/components/nav-secondary"
-import { NavUser } from "@/components/nav-user"
 import {
   Sidebar,
   SidebarContent,
@@ -36,16 +35,21 @@ import {
 } from "@/components/ui/sidebar"
 
 const data = {
-  user: {
-    name: "AI Agent",
-    email: "ai@presentation.com",
-    avatar: "/avatars/ai-agent.jpg",
-  },
   navMain: [
     {
-      title: "エージェント",
+      title: "ダッシュボード",
       url: "/",
+      icon: LayoutDashboard,
+    },
+    {
+      title: "AIチャット",
+      url: "/chat",
       icon: List,
+    },
+    {
+      title: "マルチエージェント",
+      url: "/multi-agent",
+      icon: Users,
     },
     {
       title: "ツール一覧",
@@ -113,7 +117,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <div className="p-4 text-center text-sm text-gray-500">
+          Open SuperAgent
+        </div>
       </SidebarFooter>
     </Sidebar>
   )

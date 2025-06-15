@@ -30,7 +30,7 @@ const MAIN_FEATURES = [
     title: 'AIチャット',
     description: 'メインのAIアシスタント機能',
     icon: MessageSquare,
-    href: '/chat',
+    href: '/',
     color: 'bg-blue-500',
     featured: true
   },
@@ -88,13 +88,13 @@ const TOOL_CATEGORIES = [
 ];
 
 const QUICK_ACTIONS = [
-  { title: 'プレゼンテーション作成', icon: Presentation, href: '/chat?mode=presentation' },
-  { title: 'Deep Research', icon: Bot, href: '/chat?mode=research' },
-  { title: 'コード生成', icon: Code, href: '/chat?mode=code' },
-  { title: 'メディア生成', icon: Video, href: '/chat?mode=media' }
+  { title: 'プレゼンテーション作成', icon: Presentation, href: '/?mode=presentation' },
+  { title: 'Deep Research', icon: Bot, href: '/?mode=research' },
+  { title: 'コード生成', icon: Code, href: '/?mode=code' },
+  { title: 'メディア生成', icon: Video, href: '/?mode=media' }
 ];
 
-export default function HomePage() {
+export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6">
       <div className="max-w-7xl mx-auto space-y-6">
